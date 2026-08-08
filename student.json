@@ -1,0 +1,18 @@
+{
+    "students": [
+        {
+            "name": "Rahul Sharma",
+            "email": "rahul@example.com",
+            "rollNumber": "101",
+            "course": "BCA",
+            "phone": "9876543210"
+        },
+        {
+            "name": "Priya Singh",
+            "email": "priya@example.com",
+            "rollNumber": "102",
+            "course": "B.Tech",
+            "phone": "9876543211"
+        }
+    ]
+}
