@@ -8,10 +8,10 @@ console.log("=================================");
 let passed = true;
 
 // Check index.html exists
-if (fs.existsSync("index.html")) {
-    console.log("✓ index.html exists");
+if (fs.existsSync("index1.html")) {
+    console.log("✓ index1.html exists");
 } else {
-    console.log("✗ index.html does not exist");
+    console.log("✗ index1.html does not exist");
     passed = false;
 }
 
