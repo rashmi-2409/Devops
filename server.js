@@ -1,4 +1,3 @@
-
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -7,6 +6,7 @@ const PORT = 3000;
 
 const server = http.createServer((req, res) => {
 
+    // Register student
     if (req.method === "POST" && req.url === "/register") {
 
         let body = "";
@@ -18,6 +18,7 @@ const server = http.createServer((req, res) => {
         req.on("end", () => {
 
             try {
+
                 const newStudent = JSON.parse(body);
 
                 const filePath = path.join(__dirname, "student.json");
@@ -26,8 +27,10 @@ const server = http.createServer((req, res) => {
                     fs.readFileSync(filePath, "utf8")
                 );
 
+                // Add new student
                 data.students.push(newStudent);
 
+                // Save updated data
                 fs.writeFileSync(
                     filePath,
                     JSON.stringify(data, null, 4)
@@ -43,12 +46,14 @@ const server = http.createServer((req, res) => {
 
             } catch (error) {
 
+                console.error(error);
+
                 res.writeHead(500, {
                     "Content-Type": "application/json"
                 });
 
                 res.end(JSON.stringify({
-                    message: "Error saving student"
+                    message: "Error saving student."
                 }));
             }
         });
@@ -101,6 +106,7 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    // Page not found
     res.writeHead(404);
     res.end("Not Found");
 });
