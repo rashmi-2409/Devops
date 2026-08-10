@@ -3,12 +3,28 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
     event.preventDefault();
 
     const student = {
-        name: document.getElementById("name").value,
-        email: document.getElementById("email").value,
-        rollNumber: document.getElementById("roll").value,
+        name: document.getElementById("name").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        rollNumber: document.getElementById("roll").value.trim(),
         course: document.getElementById("course").value,
-        phone: document.getElementById("phone").value
+        phone: document.getElementById("phone").value.trim()
     };
+
+    // Email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(student.email)) {
+        document.getElementById("message").textContent =
+            "Please enter a valid email address.";
+        return;
+    }
+
+    // Phone validation
+    if (!/^\d{10}$/.test(student.phone)) {
+        document.getElementById("message").textContent =
+            "Please enter a valid 10-digit phone number.";
+        return;
+    }
 
     try {
 
@@ -25,11 +41,15 @@ document.getElementById("registrationForm").addEventListener("submit", async fun
         document.getElementById("message").textContent =
             result.message;
 
-        document.getElementById("registrationForm").reset();
+        if (response.ok) {
+            document.getElementById("registrationForm").reset();
+        }
 
     } catch (error) {
 
+        console.error(error);
+
         document.getElementById("message").textContent =
-            "Error registering student.";
+            "Error connecting to server.";
     }
 });
