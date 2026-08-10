@@ -1,42 +1,35 @@
-document.getElementById("registrationForm").addEventListener("submit", function(event) {
+document.getElementById("registrationForm").addEventListener("submit", async function(event) {
+
     event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const roll = document.getElementById("roll").value.trim();
-    const course = document.getElementById("course").value;
-    const phone = document.getElementById("phone").value.trim();
-
     const student = {
-        name: name,
-        email: email,
-        rollNumber: roll,
-        course: course,
-        phone: phone
+        name: document.getElementById("name").value,
+        email: document.getElementById("email").value,
+        rollNumber: document.getElementById("roll").value,
+        course: document.getElementById("course").value,
+        phone: document.getElementById("phone").value
     };
 
-    console.log("Student Registration:", student);
+    try {
 
-    // Check email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const response = await fetch("/register", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(student)
+        });
 
-    if (!emailPattern.test(email)) {
+        const result = await response.json();
+
         document.getElementById("message").textContent =
-            "Please enter a valid email address.";
-        return;
-    }
+            result.message;
 
-    // Check phone number
-    if (!/^\d{10}$/.test(phone)) {
+        document.getElementById("registrationForm").reset();
+
+    } catch (error) {
+
         document.getElementById("message").textContent =
-            "Please enter a valid 10-digit phone number.";
-        return;
+            "Error registering student.";
     }
-
-    document.getElementById("message").textContent =
-        "Student registered successfully!";
-
-    console.log("Student data:", student);
-
-    document.getElementById("registrationForm").reset();
 });
