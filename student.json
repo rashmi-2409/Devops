@@ -13,6 +13,13 @@
             "rollNumber": "102",
             "course": "B.Tech",
             "phone": "9876543211"
+        },
+        {
+            "name": "Amit",
+            "email": "amit@gmail.com",
+            "rollNumber": "103",
+            "course": "BCA",
+            "phone": "9876543212"
         }
     ]
 }
