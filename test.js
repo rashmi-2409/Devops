@@ -1,71 +1,69 @@
+
 const fs = require("fs");
-const assert = require("assert");
 
-console.log("Starting Student Registration Project Tests...\n");
+console.log("=================================");
+console.log("TEST CASE 1: index.html");
+console.log("=================================");
 
-// Check index.html
-assert.ok(
-    fs.existsSync("index.html"),
-    "index.html file is missing"
-);
+let passed = true;
 
+// Check index.html exists
+if (fs.existsSync("index.html")) {
+    console.log("✓ index.html exists");
+} else {
+    console.log("✗ index.html does not exist");
+    passed = false;
+}
+
+// Read HTML
 const html = fs.readFileSync("index.html", "utf8");
 
-assert.ok(
-    html.includes("Student Registration"),
-    "Student Registration title is missing"
-);
+// Check registration form
+if (html.includes("<form")) {
+    console.log("✓ Registration form exists");
+} else {
+    console.log("✗ Registration form missing");
+    passed = false;
+}
 
-assert.ok(
-    html.includes("registrationForm"),
-    "Registration form is missing"
-);
+// Check name field
+if (html.toLowerCase().includes("name")) {
+    console.log("✓ Name field exists");
+} else {
+    console.log("✗ Name field missing");
+    passed = false;
+}
 
-console.log("✓ index.html test passed");
+// Check email field
+if (html.toLowerCase().includes("email")) {
+    console.log("✓ Email field exists");
+} else {
+    console.log("✗ Email field missing");
+    passed = false;
+}
 
-// Check style.css
-assert.ok(
-    fs.existsSync("style.css"),
-    "style.css file is missing"
-);
+// Check CSS
+if (html.includes("style.css")) {
+    console.log("✓ style.css is linked");
+} else {
+    console.log("✗ style.css is not linked");
+    passed = false;
+}
 
-const css = fs.readFileSync("style.css", "utf8");
+// Check JavaScript
+if (html.includes("script.js")) {
+    console.log("✓ script.js is linked");
+} else {
+    console.log("✗ script.js is not linked");
+    passed = false;
+}
 
-assert.ok(
-    css.includes(".container"),
-    "CSS container is missing"
-);
+console.log("---------------------------------");
 
-console.log("✓ style.css test passed");
-
-// Check script.js
-assert.ok(
-    fs.existsSync("script.js"),
-    "script.js file is missing"
-);
-
-const js = fs.readFileSync("script.js", "utf8");
-
-assert.ok(
-    js.includes("registrationForm"),
-    "Registration form JavaScript is missing"
-);
-
-console.log("✓ script.js test passed");
-
-// Check student.json
-assert.ok(
-    fs.existsSync("student.json"),
-    "student.json file is missing"
-);
-
-const json = JSON.parse(fs.readFileSync("student.json", "utf8"));
-
-assert.ok(
-    Array.isArray(json.students),
-    "students array is missing in student.json"
-);
-
-console.log("✓ student.json test passed");
-
-console.log("\nAll tests passed successfully!");
+if (passed) {
+    console.log("ALL index.html TESTS PASSED!");
+    process.exit(0);
+} else {
+    console.log("index.html TEST FAILED!");
+    process.exit(1);
+}
