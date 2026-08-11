@@ -5,13 +5,14 @@ const path = require("path");
 const app = express();
 
 const PORT = 3001;
-const DATA_FILE = path.join(__dirname, "students.json");
+
+// IMPORTANT: your file is student.json
+const DATA_FILE = path.join(__dirname, "student.json");
 
 app.use(express.json());
 app.use(express.static(__dirname));
 
 app.post("/register", (req, res) => {
-
     try {
 
         const students = JSON.parse(
