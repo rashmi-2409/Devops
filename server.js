@@ -1,116 +1,54 @@
-const http = require("http");
+const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
-const PORT = 3000;
+const app = express();
 
-const server = http.createServer((req, res) => {
+const PORT = 3001;
+const DATA_FILE = path.join(__dirname, "students.json");
 
-    // Register student
-    if (req.method === "POST" && req.url === "/register") {
+app.use(express.json());
+app.use(express.static(__dirname));
 
-        let body = "";
+app.post("/register", (req, res) => {
 
-        req.on("data", chunk => {
-            body += chunk;
-        });
+    try {
 
-        req.on("end", () => {
-
-            try {
-
-                const newStudent = JSON.parse(body);
-
-                const filePath = path.join(__dirname, "student.json");
-
-                const data = JSON.parse(
-                    fs.readFileSync(filePath, "utf8")
-                );
-
-                // Add new student
-                data.students.push(newStudent);
-
-                // Save updated data
-                fs.writeFileSync(
-                    filePath,
-                    JSON.stringify(data, null, 4)
-                );
-
-                res.writeHead(200, {
-                    "Content-Type": "application/json"
-                });
-
-                res.end(JSON.stringify({
-                    message: "Student registered successfully!"
-                }));
-
-            } catch (error) {
-
-                console.error(error);
-
-                res.writeHead(500, {
-                    "Content-Type": "application/json"
-                });
-
-                res.end(JSON.stringify({
-                    message: "Error saving student."
-                }));
-            }
-        });
-
-        return;
-    }
-
-    // Serve index.html
-    if (req.url === "/" || req.url === "/index.html") {
-
-        const file = fs.readFileSync(
-            path.join(__dirname, "index.html")
+        const students = JSON.parse(
+            fs.readFileSync(DATA_FILE, "utf8")
         );
 
-        res.writeHead(200, {
-            "Content-Type": "text/html"
-        });
+        const newStudent = {
+            name: req.body.name,
+            email: req.body.email,
+            rollNumber: req.body.rollNumber,
+            course: req.body.course,
+            phone: req.body.phone
+        };
 
-        res.end(file);
-        return;
-    }
+        students.push(newStudent);
 
-    // Serve CSS
-    if (req.url === "/style.css") {
-
-        const file = fs.readFileSync(
-            path.join(__dirname, "style.css")
+        fs.writeFileSync(
+            DATA_FILE,
+            JSON.stringify(students, null, 4)
         );
 
-        res.writeHead(200, {
-            "Content-Type": "text/css"
+        console.log("Student registered successfully.");
+
+        res.status(200).json({
+            message: "Student registered successfully!"
         });
 
-        res.end(file);
-        return;
-    }
+    } catch (error) {
 
-    // Serve JavaScript
-    if (req.url === "/script.js") {
+        console.error(error);
 
-        const file = fs.readFileSync(
-            path.join(__dirname, "script.js")
-        );
-
-        res.writeHead(200, {
-            "Content-Type": "application/javascript"
+        res.status(500).json({
+            message: "Error saving student."
         });
-
-        res.end(file);
-        return;
     }
-
-    // Page not found
-    res.writeHead(404);
-    res.end("Not Found");
 });
 
-server.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`Server running on port ${PORT}`);
 });
