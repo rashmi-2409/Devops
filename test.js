@@ -3,72 +3,66 @@ const fs = require("fs");
 let passed = true;
 
 console.log("=================================");
-console.log("STUDENT REGISTRATION TESTS");
+console.log("STUDENT REGISTRATION TEST CASES");
 console.log("=================================");
 
-// =================================
-// TEST CASE 1: index.html
-// =================================
+// TEST CASE 1: Files
+console.log("\nTEST CASE 1: FILE VALIDATION");
 
-console.log("\nTEST CASE 1: INDEX.HTML");
+const files = [
+    "index.html",
+    "style.css",
+    "script.js",
+    "server.js",
+    "students.json"
+];
 
-if (fs.existsSync("index.html")) {
-    console.log("✓ index.html exists");
-} else {
-    console.log("✗ index.html does not exist");
-    passed = false;
-}
+files.forEach(file => {
+
+    if (fs.existsSync(file)) {
+        console.log(`✓ ${file} exists`);
+    } else {
+        console.log(`✗ ${file} not found`);
+        passed = false;
+    }
+
+});
+
+// TEST CASE 2: HTML FORM
+console.log("\nTEST CASE 2: REGISTRATION FORM");
 
 const html = fs.readFileSync("index.html", "utf8");
 
-if (html.includes('id="registrationForm"')) {
-    console.log("✓ Registration form exists");
+const requiredFields = [
+    'id="studentForm"',
+    'id="name"',
+    'id="email"',
+    'id="rollNumber"',
+    'id="course"',
+    'id="phone"'
+];
+
+requiredFields.forEach(field => {
+
+    if (html.includes(field)) {
+        console.log(`✓ ${field} exists`);
+    } else {
+        console.log(`✗ ${field} missing`);
+        passed = false;
+    }
+
+});
+
+// Make sure student table is NOT displayed
+if (!html.includes("studentTable")) {
+    console.log("✓ Registered students are not displayed");
 } else {
-    console.log("✗ Registration form missing");
+    console.log("✗ Registered students table found");
     passed = false;
 }
 
-if (html.includes('id="name"')) {
-    console.log("✓ Name field exists");
-} else {
-    console.log("✗ Name field missing");
-    passed = false;
-}
-
-if (html.includes('id="email"')) {
-    console.log("✓ Email field exists");
-} else {
-    console.log("✗ Email field missing");
-    passed = false;
-}
-
-if (html.includes('id="roll"')) {
-    console.log("✓ Roll number field exists");
-} else {
-    console.log("✗ Roll number field missing");
-    passed = false;
-}
-
-if (html.includes('id="course"')) {
-    console.log("✓ Course field exists");
-} else {
-    console.log("✗ Course field missing");
-    passed = false;
-}
-
-if (html.includes('id="phone"')) {
-    console.log("✓ Phone field exists");
-} else {
-    console.log("✗ Phone field missing");
-    passed = false;
-}
-
-
-// =================================
-// TEST CASE 2: EMAIL VERIFICATION
-// =================================
-
-console.log("\nTEST CASE 2: EMAIL VERIFICATION");
+// TEST CASE 3: EMAIL VALIDATION
+console.log("\nTEST CASE 3: EMAIL VERIFICATION");
 
 function isValidEmail(email) {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -103,99 +97,70 @@ if (isValidEmail("student@gmail.com")) {
     passed = false;
 }
 
-if (isValidEmail("student123@example.com")) {
-    console.log("✓ Another valid email accepted");
-} else {
-    console.log("✗ Another valid email rejected");
-    passed = false;
-}
+// TEST CASE 4: STUDENTS.JSON
+console.log("\nTEST CASE 4: STUDENTS.JSON");
 
+try {
 
-// =================================
-// TEST CASE 3: STUDENT.JSON
-// =================================
+    const students = JSON.parse(
+        fs.readFileSync("students.json", "utf8")
+    );
 
-console.log("\nTEST CASE 3: STUDENT.JSON");
-
-if (fs.existsSync("student.json")) {
-
-    console.log("✓ student.json exists");
-
-    try {
-
-        const data = JSON.parse(
-            fs.readFileSync("student.json", "utf8")
-        );
-
-        if (Array.isArray(data.students)) {
-            console.log("✓ students array exists");
-        } else {
-            console.log("✗ students array missing");
-            passed = false;
-        }
-
-        if (data.students.length > 0) {
-
-            const student = data.students[0];
-
-            if (student.name) {
-                console.log("✓ Student name exists");
-            } else {
-                console.log("✗ Student name missing");
-                passed = false;
-            }
-
-            if (student.email) {
-                console.log("✓ Student email exists");
-            } else {
-                console.log("✗ Student email missing");
-                passed = false;
-            }
-
-            if (student.rollNumber) {
-                console.log("✓ Roll number exists");
-            } else {
-                console.log("✗ Roll number missing");
-                passed = false;
-            }
-
-            if (student.course) {
-                console.log("✓ Course exists");
-            } else {
-                console.log("✗ Course missing");
-                passed = false;
-            }
-
-            if (student.phone) {
-                console.log("✓ Phone number exists");
-            } else {
-                console.log("✗ Phone number missing");
-                passed = false;
-            }
-
-        } else {
-
-            console.log("✗ No students found");
-            passed = false;
-        }
-
-    } catch (error) {
-
-        console.log("✗ student.json contains invalid JSON");
+    if (Array.isArray(students)) {
+        console.log("✓ students.json contains an array");
+    } else {
+        console.log("✗ students.json is not an array");
         passed = false;
     }
 
-} else {
+    students.forEach((student, index) => {
 
-    console.log("✗ student.json does not exist");
+        console.log(`\nStudent ${index + 1}:`);
+
+        if (student.name && student.name.trim() !== "") {
+            console.log("Name Validation : PASS");
+        } else {
+            console.log("Name Validation : FAIL");
+            passed = false;
+        }
+
+        if (student.email && student.email.trim() !== "") {
+            console.log("Email Validation : PASS");
+        } else {
+            console.log("Email Validation : FAIL");
+            passed = false;
+        }
+
+        if (student.rollNumber && student.rollNumber.trim() !== "") {
+            console.log("Roll Number Validation : PASS");
+        } else {
+            console.log("Roll Number Validation : FAIL");
+            passed = false;
+        }
+
+        if (student.course && student.course.trim() !== "") {
+            console.log("Course Validation : PASS");
+        } else {
+            console.log("Course Validation : FAIL");
+            passed = false;
+        }
+
+        if (student.phone && /^\d{10}$/.test(student.phone)) {
+            console.log("Phone Validation : PASS");
+        } else {
+            console.log("Phone Validation : FAIL");
+            passed = false;
+        }
+
+    });
+
+} catch (error) {
+
+    console.log("✗ students.json contains invalid JSON");
     passed = false;
 }
 
-
-// =================================
 // FINAL RESULT
-// =================================
-
 console.log("\n=================================");
 
 if (passed) {
@@ -205,6 +170,6 @@ if (passed) {
 
 } else {
 
-    console.log("TESTS FAILED!");
+    console.log("SOME TEST CASES FAILED!");
     process.exit(1);
 }
