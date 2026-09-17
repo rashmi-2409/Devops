@@ -1,1 +1,12 @@
-
+{
+  "name": "student-registration",
+  "version": "1.0.0",
+  "description": "Student Registration App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
