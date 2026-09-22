@@ -6,6 +6,7 @@ form.addEventListener("submit", async function(event) {
 
     const student = {
         name: document.getElementById("name").value.trim(),
+        username: document.getElementById("username").value.trim(),
         email: document.getElementById("email").value.trim(),
         rollNumber: document.getElementById("rollNumber").value.trim(),
         course: document.getElementById("course").value,
