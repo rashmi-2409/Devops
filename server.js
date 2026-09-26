@@ -21,10 +21,12 @@ app.post("/register", (req, res) => {
 
         const newStudent = {
             name: req.body.name,
+            username: req.body.username,
             email: req.body.email,
             rollNumber: req.body.rollNumber,
             course: req.body.course,
-            phone: req.body.phone
+            phone: req.body.phone,
+            password: req.body.password
         };
 
         students.push(newStudent);
