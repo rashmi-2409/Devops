@@ -42,9 +42,10 @@ form.addEventListener("submit", async function(event) {
         document.getElementById("message").textContent =
             result.message;
 
-        if (response.ok) {
-            form.reset();
-        }
+       if (response.ok) {
+    form.reset();
+    window.location.href = "login.html";
+}
 
     } catch (error) {
 
