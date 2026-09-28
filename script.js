@@ -10,7 +10,8 @@ form.addEventListener("submit", async function(event) {
         email: document.getElementById("email").value.trim(),
         rollNumber: document.getElementById("rollNumber").value.trim(),
         course: document.getElementById("course").value,
-        phone: document.getElementById("phone").value.trim()
+        phone: document.getElementById("phone").value.trim(),
+        password: document.getElementById("password").value.trim()
     };
 
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
