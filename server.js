@@ -5,7 +5,7 @@ const path = require("path");
 const app = express();
 
 const PORT = 3001;
-const DATA_FILE = path.join(__dirname, "student.json");
+const DATA_FILE = path.join(__dirname, "data", "student.json");
 
 app.use(express.json());
 app.use(express.static(__dirname));
